@@ -1,9 +1,12 @@
 # Distillation
 Jupyter notebook for easy beer analysis.
 
+<img width="800" alt="Distillation-index" src="https://user-images.githubusercontent.com/69721131/205592542-f70a4f35-ddee-4cf1-8eb8-dcdddbc64678.png">
+
 ## Dependencies
 * Python 3.10 environment with `jupyterlab`, `ipywidgets`, `uncertainties` and `json` packages.
 * pdflatex.
+
 
 You can use conda to install Python dependencies. Installation using `ENV.yml` from source folder:
 
