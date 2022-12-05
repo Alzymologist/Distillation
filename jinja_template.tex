@@ -1,0 +1,116 @@
+\documentclass[12pt,a4paper,english]{ltxdoc}
+\usepackage{graphicx} %# For \includegraphics
+\usepackage{fancyhdr} %# For fancy pagestyle
+\usepackage{lastpage}
+\usepackage[iso]{isodate} %# Makes \today print date in format 2022-11-20 (not November 20, 2022).
+\usepackage{longtable}
+\usepackage{ragged2e} %# for \begin{Center}
+\usepackage[parfill]{parskip} %# Do not indent paragraphs
+\usepackage[symbol*]{footmisc} %# for \footref
+\usepackage[labelformat=empty,textfont=Large,textfont=bf, skip=0pt]{caption} %# for caption customization
+\usepackage{hyperref} %# for link to email an site
+
+\oddsidemargin=-10pt
+\textwidth=6.5in
+
+\pagestyle{fancy} %# Makes heads and foots render
+\lhead{\large Test report № \VAR{current_day}-\VAR{widget["experiment_id"]}}
+\rhead{\includegraphics[height=20pt]{../source/namelogo.pdf}}
+\lfoot{Date: \hspace{14pt}\today}
+\cfoot{}
+\rfoot{Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\doublerulesep}{\arrayrulewidth} %# Double rules look like one thick one
+\linespread{1.5} %# Line spacing
+
+\begin{document}
+
+    %# These are comments! Bellow is example python code for use with jinja2.
+    %# To make the example work, uncomment the lines below by removing the %#.
+    %# %% for number in [1, 2, 3, 4, 9, "hello"]:
+    %# %% print(number)
+    %# %% print("\\\\")
+    %# %% endfor
+    
+    \begin{flushright}
+        Alzymologist Oy Lab $\bullet$ Karamalmintie 2 $\bullet$ Espoo 02330 $\bullet$ Finland \\
+        \href{mailto:lab@zymologia.fi}{lab@zymologia.fi} \\
+    \end{flushright}
+    
+    \begin{flushleft}
+        \begin{multicols}{2}
+            {\textbf{Beer sample info}} \\
+            Product name: \VAR{widget["product_name"]} \\
+            Quantity of sample: \VAR{widget["quantity_of_sample"]} \\
+            Lot: \VAR{widget["lot"]} \\
+            Declared ABV: \VAR{widget["declared_alcoholic_strength"]} \% \\
+            Producer: \VAR{widget["producer"]} \\
+            Sampler: \VAR{widget["sampler"]} \\
+            Date of sampling: \VAR{widget["date_of_sampling"]} \\
+            Date of arrival: \VAR{widget["date_of_arrival"]} \\
+            Date of analysis: \VAR{widget["date_of_analysis"]} \\
+            Purpose of testing: \VAR{widget["purpose_of_testing"]} \\
+
+            \columnbreak
+
+            {\textbf{Submitter info}} \\
+            Submitting company: \VAR{widget["submitting_company"]} \\
+            Address: \VAR{widget["address"]} \\
+            Contact person: \VAR{widget["contact_person"]} \\
+            Phone, e-mail: \VAR{widget["phone_and_email_of_contact_person"]} \\
+        \end{multicols}
+    \end{flushleft}
+
+    \setlength\LTleft{0pt}
+    \setlength\LTright{0pt}
+    
+    \begin{longtable}{@{\extracolsep{\fill}\hspace{\tabcolsep}} l c c r }
+        \caption{Results} \\
+        
+        \hline \hline
+        {\bf Parameter} & 
+        \multicolumn{1}{c}{\bf Average value} & 
+        \multicolumn{1}{c}{\bf Unit} & 
+        \multicolumn{1}{c}{\bf Method}
+        \\* \hline \hline \endhead
+        %# LOOP for printing rows of a results table:
+        %% for tag in requested_tags:
+            \VAR{tag} 
+            & \VAR{function_data[inverse_tag_names[tag]]["formatted_result"]} 
+            %% if tag in tags_with_uncertainty:
+                \footnotemark[1]
+            %% endif
+            %% if tag is in tags_without_uncertainty:
+                \footnotemark[2]
+            %% endif
+            & \VAR{function_data[inverse_tag_names[tag]]["unit"]} 
+            & \VAR{function_data[inverse_tag_names[tag]]["method"]} 
+            %% if tag in tags_without_accreditation:
+                \footnotemark[3]
+            %% endif
+            \\
+        %% endfor
+    \end{longtable}
+    
+        %% if info_for_with_uncertainty:
+            \footnotemark[1] {Values are expressed with expanded uncertainty U (k=2).} \\
+        %% endif
+        %% if info_for_without_uncertainty:
+             \footnotemark[2] {Uncertainties have not been determined  due to insufficient data, 
+             precision of results is presented in accordance with referred standard methods.} \\
+        %% endif
+        %% if info_for_not_accredited:
+            \footnotemark[3] {Method is not accredited.} \\
+        %% endif
+        \\
+        Analyses were carried out by \VAR{widget["analyst_name"]}, analytical services chemist. \\
+        Results were approved by V. Abramova, CTO of Alzymologist Oy. \\
+        The results of the analysis are representative of the received sample only. \\
+        The report may not be reproduced without permission from Alzymologist Oy. \\
+        The report has been sent\VAR{widget["results_sending_method"]}. \\
+    \begin{Center}
+        \emph{The end of the test report}
+    \end{Center}
+
+\end{document}
