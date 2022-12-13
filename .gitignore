@@ -1,0 +1,13 @@
+**/.DS_Store
+**/.ipynb_checkpoints
+source/__pycache__
+
+**/*.pdf
+**/*.json
+
+source/report.tex
+source/report.out
+source/report.log
+source/report.aux
+
+!source/namelogo.pdf
