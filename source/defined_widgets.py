@@ -121,8 +121,9 @@ tag_selector = widgets.TagsInput(
 )
 
 generate_pdf_button = widgets.Button(
-    description="Generate report",
-    button_style='info'
+    description="Create report",
+    button_style='info',
+    tooltip='Creates a PDF report with selected data.',
 )
 
 # Lab widgets for Series #1

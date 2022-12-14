@@ -83,25 +83,36 @@ def residue_gravity(SGER):
 # Original Gravity (º Sacch.) (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
 def original_gravity(D, RG):
     return D + RG
-    
-from uncertainties import ufloat # Floating number with uncertainty
 
-# 9.2.1 ALCOHOL IN BEER BY DISTILLATION – 2008
-# 10.1 1995/1996 trial Alcohol in % (V/V)
+# Series: Analytica EBC
+# Document: 9.2.1 ALCOHOL IN BEER BY DISTILLATION – 2008
+# Section: 10.1 1995/1996 trial Alcohol in % (V/V)
 def average_alcohol_content_by_volume(alcohol_content_S1, alcohol_content_S2):
+    mean = (alcohol_content_S1 + alcohol_content_S2) / 2
     repeatability = 0.062
     if  (0.84 <= alcohol_content_S1 <= 7.27) \
     and (0.84 <= alcohol_content_S2 <= 7.27) \
     and (abs(alcohol_content_S1 - alcohol_content_S2) <= repeatability):
-        mean = (alcohol_content_S1 + alcohol_content_S2) / 2
         R95 = 0.07 + 0.02 * mean
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
     else:
         return None
-    
+
+# Series: Analytica EBC
+# Document: 9.2.1 ALCOHOL IN BEER BY DISTILLATION – 2008
+# Section: 10.2 1996 trial - 10.2.1 Alcohol in % (m/m)
 def average_alcohol_content_by_mass(alcohol_content_S1, alcohol_content_S2):
-    return (alcohol_content_S1 + alcohol_content_S2) / 2
+    mean = (alcohol_content_S1 + alcohol_content_S2) / 2
+    repeatability = 0.03 + 0.005 * mean
+    if  (1.72 <= alcohol_content_S1 <=7.00) \
+    and (1.72 <= alcohol_content_S2 <=7.00) \
+    and (abs(alcohol_content_S1 - alcohol_content_S2) <= repeatability):
+        R95 = 0.03 + 0.02 * mean
+        uncertainty = (R95 / 2.77) * 2
+        return ufloat(mean, uncertainty)
+    else:
+        return None
 
 def average_specific_gravity_of_beer(specific_gravity_S1, specific_gravity_S2):
     return (specific_gravity_S1 + specific_gravity_S2) / 2
