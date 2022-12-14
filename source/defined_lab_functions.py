@@ -1,27 +1,33 @@
 from uncertainties import ufloat # Floating number with uncertainty
 
-def mass_of_sample_before_distillation(mass_dist_flask_with_sample, mass_dist_flask_empty):
-    return mass_dist_flask_with_sample - mass_dist_flask_empty
+def difference(base, deduct):
+    return base - deduct
 
-#Sample mass after distillation (100,0±0,1), g
-def mass_of_distillate(mass_rec_flask_after_dist, mass_rec_flask_empty):
-    return mass_rec_flask_after_dist - mass_rec_flask_empty
+# def mass_of_sample_before_distillation(mass_dist_flask_with_sample, mass_dist_flask_empty):
+#     return mass_dist_flask_with_sample - mass_dist_flask_empty
 
-#Distilled beer mass after dist., (100,0±0,1) g
-def mass_of_residue_after_distillation(mass_dist_flask_after_dist, mass_dist_flask_empty):
-    return mass_dist_flask_after_dist - mass_dist_flask_empty
+# #Sample mass after distillation (100,0±0,1), g
+# def mass_of_distillate(mass_rec_flask_after_dist, mass_rec_flask_empty):
+#     return mass_rec_flask_after_dist - mass_rec_flask_empty
 
-# SGA = specific gravity of the distillate (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
-def specific_gravity_of_distillate(mass_pycn_with_dist, mass_pycn_empty, mass_pycn_with_water):
-    return (mass_pycn_with_dist - mass_pycn_empty) / (mass_pycn_with_water -  mass_pycn_empty)
+# #Distilled beer mass after dist., (100,0±0,1) g
+# def mass_of_residue_after_distillation(mass_dist_flask_after_dist, mass_dist_flask_empty):
+#     return mass_dist_flask_after_dist - mass_dist_flask_empty
 
-# SGEA = specific gravity of decarbonated beer (source: 9.2.1 ALCOHOL IN BEER BY DISTILLATION)
-def specific_gravity_of_beer(mass_pycn_with_beer, mass_pycn_empty, mass_pycn_with_water):
-    return (mass_pycn_with_beer - mass_pycn_empty) / (mass_pycn_with_water -  mass_pycn_empty)
+def specific_gravity_using_pycnometer(mass_with_substance, mass_empty, mass_with_water):
+    return (mass_with_substance - mass_empty) / (mass_with_water - mass_empty)
 
-# SGER = specific gravity of the residue (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)   
-def specific_gravity_of_residue(mass_pycn_with_residue, mass_pycn_empty, mass_pycn_with_water):
-    return (mass_pycn_with_residue - mass_pycn_empty) / (mass_pycn_with_water -  mass_pycn_empty)
+# # SGA = specific gravity of the distillate (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
+# def specific_gravity_of_distillate(mass_pycn_with_dist, mass_pycn_empty, mass_pycn_with_water):
+#     return (mass_pycn_with_dist - mass_pycn_empty) / (mass_pycn_with_water -  mass_pycn_empty)
+
+# # SGEA = specific gravity of decarbonated beer (source: 9.2.1 ALCOHOL IN BEER BY DISTILLATION)
+# def specific_gravity_of_beer(mass_pycn_with_beer, mass_pycn_empty, mass_pycn_with_water):
+#     return (mass_pycn_with_beer - mass_pycn_empty) / (mass_pycn_with_water -  mass_pycn_empty)
+
+# # SGER = specific gravity of the residue (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
+# def specific_gravity_of_residue(mass_pycn_with_residue, mass_pycn_empty, mass_pycn_with_water):
+#     return (mass_pycn_with_residue - mass_pycn_empty) / (mass_pycn_with_water -  mass_pycn_empty)
 
 # A, Alcohol as % (m/m) = Alcohol content of the distillate (source: 9.2.1 ALCOHOL IN BEER BY DISTILLATION)
 def alcohol_content_by_mass(SGA):
@@ -31,13 +37,16 @@ def alcohol_content_by_mass(SGA):
 def alcohol_content_by_volume(A, SGEA):
     return A * SGEA/0.791
 
-#Real extract, ER (% Plato) (9.1.1)
-def real_extract(SGER):
-    return -460.234 + 662.649 * SGER - 202.414 * SGER**2
+def extract(specific_gravity):
+    return -460.234 + 662.649 * specific_gravity - 202.414 * specific_gravity**2
 
-#Apparent extract, EA (% Plato) (9.1.2)
-def apparent_extract(SGEA):                                          
-    return -460.234 + 662.649 * SGEA - 202.414 * SGEA**2
+#Real extract, ER (% Plato) (9.1.1)
+# def real_extract(SGER):
+#     return -460.234 + 662.649 * SGER - 202.414 * SGER**2
+
+# #Apparent extract, EA (% Plato) (9.1.2)
+# def apparent_extract(SGEA):
+#     return -460.234 + 662.649 * SGEA - 202.414 * SGEA**2
 
 #Original extract, p (% Plato) (9.1.4.1)
 def original_extract(A, real_extract):
