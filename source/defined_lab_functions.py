@@ -1,72 +1,71 @@
-from uncertainties import ufloat # Floating number with uncertainty
+from uncertainties import ufloat # Floating numbers with uncertainty
 
 def difference(base, deduct):
     return base - deduct
 
-# def mass_of_sample_before_distillation(mass_dist_flask_with_sample, mass_dist_flask_empty):
-#     return mass_dist_flask_with_sample - mass_dist_flask_empty
-
-# #Sample mass after distillation (100,0±0,1), g
-# def mass_of_distillate(mass_rec_flask_after_dist, mass_rec_flask_empty):
-#     return mass_rec_flask_after_dist - mass_rec_flask_empty
-
-# #Distilled beer mass after dist., (100,0±0,1) g
-# def mass_of_residue_after_distillation(mass_dist_flask_after_dist, mass_dist_flask_empty):
-#     return mass_dist_flask_after_dist - mass_dist_flask_empty
-
+# Function for SGA, SGEA, SGER. Reference:
+# Series: Analytica EBC
+# Document: 8.2.1 SPECIFIC GRAVITY OF WORT USING A PYKNOMETER – 2004
+# Section: 9.1.1 Calculate the specific gravity (SG) of the wort
+# SGA = SG of the distillate (references between documents: 9.2.1 -> 9.43.1 -> 8.2.1)
+# SGEA = SG of the decarbonated beer (references between documents: 9.2.1 -> 9.43.1 -> 8.2.1)
+# SGER = SG of the residue solution (references between documents: 9.4 -> 9.43.1 -> 8.2.1)
 def specific_gravity_using_pycnometer(mass_with_substance, mass_empty, mass_with_water):
     return (mass_with_substance - mass_empty) / (mass_with_water - mass_empty)
 
-# # SGA = specific gravity of the distillate (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
-# def specific_gravity_of_distillate(mass_pycn_with_dist, mass_pycn_empty, mass_pycn_with_water):
-#     return (mass_pycn_with_dist - mass_pycn_empty) / (mass_pycn_with_water -  mass_pycn_empty)
-
-# # SGEA = specific gravity of decarbonated beer (source: 9.2.1 ALCOHOL IN BEER BY DISTILLATION)
-# def specific_gravity_of_beer(mass_pycn_with_beer, mass_pycn_empty, mass_pycn_with_water):
-#     return (mass_pycn_with_beer - mass_pycn_empty) / (mass_pycn_with_water -  mass_pycn_empty)
-
-# # SGER = specific gravity of the residue (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
-# def specific_gravity_of_residue(mass_pycn_with_residue, mass_pycn_empty, mass_pycn_with_water):
-#     return (mass_pycn_with_residue - mass_pycn_empty) / (mass_pycn_with_water -  mass_pycn_empty)
-
-# A, Alcohol as % (m/m) = Alcohol content of the distillate (source: 9.2.1 ALCOHOL IN BEER BY DISTILLATION)
+# Function for alcohol content by mass. Reference:
+# Series: Analytica EBC
+# Document: 9.2.1 ALCOHOL IN BEER BY DISTILLATION – 2008
+# Section: 9.1 Alcohol as % (m/m)
 def alcohol_content_by_mass(SGA):
-    return 517.4*(1 - SGA) + 5084*(1 - SGA)**2 + 33503*(1 - SGA)**3 
+    return 517.4 * (1 - SGA) + 5084 * (1 - SGA)**2 + 33503 * (1 - SGA)**3
 
-# ABV, Alcohol as % (V/V)  (source: 9.2.1 ALCOHOL IN BEER BY DISTILLATION)
-def alcohol_content_by_volume(A, SGEA):
-    return A * SGEA/0.791
+# Function for alcohol content by volume (ABV). Reference:
+# Series: Analytica EBC
+# Document: 9.2.1 ALCOHOL IN BEER BY DISTILLATION – 2008
+# Section: 9.2 Alcohol as % (V/V)
+def alcohol_content_by_volume(A_by_mass, SGEA):
+    return A_by_mass * SGEA / 0.791
 
+# Function for real extract (ER) and apparent extract (EA). Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.1.1 Real extract, 9.1.2 Apparent extract
 def extract(specific_gravity):
     return -460.234 + 662.649 * specific_gravity - 202.414 * specific_gravity**2
 
-#Real extract, ER (% Plato) (9.1.1)
-# def real_extract(SGER):
-#     return -460.234 + 662.649 * SGER - 202.414 * SGER**2
+# Function for original extract. Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.1.4.1 Calculate the original extract (% Plato) of the beer
+def original_extract(A_by_mass, real_extract):
+    return (2.0665 * A_by_mass + real_extract) * 100 / (100 + 1.0665 * A_by_mass)
 
-# #Apparent extract, EA (% Plato) (9.1.2)
-# def apparent_extract(SGEA):
-#     return -460.234 + 662.649 * SGEA - 202.414 * SGEA**2
+# Function for real degree of fermentation of beer (RDF). Reference:
+# Series: Analytica EBC
+# Document: 9.5 REAL DEGREE OF FERMENTATION OF BEER 1997
+# Section: 5.1.1 Calculate real degree of fermentation of beer
+def real_degree_of_fermentation(A_by_mass, real_extract):
+    return 100 * 2.0665 * A_by_mass / (2.0665 * A_by_mass + real_extract)
 
-#Original extract, p (% Plato) (9.1.4.1)
-def original_extract(A, real_extract):
-    return (2.0665 * A + real_extract) * 100 / (100 + 1.0665 * A)
-
-# RDF = real degree of fermentation of beer (source: 9.5 REAL DEGREE OF FERMENTATION OF BEER)
-def real_degree_of_fermentation(A, real_extract):
-    return 100 * 2.0665 * A / (2.0665 * A + real_extract)
-
-# ADF = Apparent degree of Fermentation 
-#(source: Examination of the Relationships Between Original, Real and Apparent Extracts,
-# https://doi.org/10.1080/03610470.2018.1553459)
+# Function for apparent degree of fermentation or apparent attenuation (ADF). Reference:
+# Series: Analytica EBC
+# Document: 4.11.2 FERMENTABILITY, FINAL ATTENUATION OF LABORATORY WORT FROM MALT: RAPID METHOD – 1999
+# Section: 9.1.2 Obtain the fermentability (apparent attenuation)
 def apparent_degree_of_fermentation(original_extract, apparent_extract):
-    return 100 * (original_extract-apparent_extract) / original_extract
+    return 100 * (original_extract - apparent_extract) / original_extract
 
-# S = Spirit indication (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
+# Function for spirit indication. Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.1.5.1 Calculate the spirit indication (S)
 def spirit_indication(SGA):
     return 1000 * (1-SGA)
 
-# D = degrees of gravity lost (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
+# Function for degrees of gravity lost. Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.1.5.2 Calculate the corresponding degrees of gravity lost (D)
 def degrees_of_gravity_lost(S):
     if        S < 2:   D = S * 4.24
     elif 2 <= S < 4:   D = S * 4.38411 - 0.32055
@@ -85,14 +84,21 @@ def degrees_of_gravity_lost(S):
     elif       S>= 16: D = S * 5.07 - 7.08
     return D
 
-# RG = Residue Gravity (RG) (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
+# Function for residue gravity (RG). Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.1.5.3 Calculate the residue gravity (RG)
 def residue_gravity(SGER):
     return 1000 * (SGER-1)
 
-# Original Gravity (º Sacch.) (source: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004)
+# Function for original gravity. Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.1.5.4 Calculate the original gravity
 def original_gravity(D, RG):
     return D + RG
 
+# Function for average alcohol content by volume. Reference:
 # Series: Analytica EBC
 # Document: 9.2.1 ALCOHOL IN BEER BY DISTILLATION – 2008
 # Section: 10.1 1995/1996 trial Alcohol in % (V/V)
@@ -108,6 +114,7 @@ def average_alcohol_content_by_volume(alcohol_content_S1, alcohol_content_S2):
     else:
         return None
 
+# Function for average alcohol content by mass. Reference:
 # Series: Analytica EBC
 # Document: 9.2.1 ALCOHOL IN BEER BY DISTILLATION – 2008
 # Section: 10.2 1996 trial - 10.2.1 Alcohol in % (m/m)
@@ -123,6 +130,7 @@ def average_alcohol_content_by_mass(alcohol_content_S1, alcohol_content_S2):
     else:
         return None
 
+#If duplicate determinations give specific gravities which differ by more than two units in the fourth decimal place repeat the analysis.
 def average_specific_gravity_of_beer(specific_gravity_S1, specific_gravity_S2):
     return (specific_gravity_S1 + specific_gravity_S2) / 2
 
