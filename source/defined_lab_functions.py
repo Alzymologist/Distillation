@@ -112,7 +112,7 @@ def average_alcohol_content_by_volume(alcohol_content_S1, alcohol_content_S2):
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
     else:
-        return None
+        return mean
 
 # Function for average alcohol content by mass. Reference:
 # Series: Analytica EBC
@@ -128,29 +128,109 @@ def average_alcohol_content_by_mass(alcohol_content_S1, alcohol_content_S2):
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
     else:
+        return mean
+
+# Function for average specific gravity. Reference:
+# Series: Analytica EBC
+# Document: 8.2.1 SPECIFIC GRAVITY OF WORT USING A PYKNOMETER – 2004
+# Section: 8.2.2 Carry out duplicate determinations
+def average_specific_gravity_of_beer(specific_gravity_S1, specific_gravity_S2):
+    rounded_specific_gravity_S1 = round(specific_gravity_S1, 4)
+    rounded_specific_gravity_S2 = round(specific_gravity_S2, 4)
+    if abs(rounded_specific_gravity_S1 - rounded_specific_gravity_S2) <= 0.0002:
+        mean = (specific_gravity_S1 + specific_gravity_S2) / 2
+        return mean 
+    else:
         return None
 
-#If duplicate determinations give specific gravities which differ by more than two units in the fourth decimal place repeat the analysis.
-def average_specific_gravity_of_beer(specific_gravity_S1, specific_gravity_S2):
-    return (specific_gravity_S1 + specific_gravity_S2) / 2
-
-def average_original_extract(original_extract_S1, original_extract_S2):
-    return (original_extract_S1 + original_extract_S2) / 2
-
+# Function for average real extract. Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.2.1.1 Real extract, % Plato
 def average_real_extract(real_extract_S1, real_extract_S2):
-    return (real_extract_S1 + real_extract_S2) / 2
+    mean = (real_extract_S1 + real_extract_S2) / 2
+    repeatability =  0.02
+    if  (2.9 <= real_extract_S1 <= 6.0) \
+    and (2.9 <= real_extract_S2 <= 6.0) \
+    and (abs(real_extract_S1 - real_extract_S2) <= repeatability):
+        R95 = 0.02 * mean
+        uncertainty = (R95 / 2.77) * 2
+        return ufloat(mean, uncertainty)
+    else:
+        return mean
 
+# Function for average original extract. Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.2.1.2 Original extract, % Plato
+def average_original_extract(original_extract_S1, original_extract_S2):
+    mean = (original_extract_S1 + original_extract_S2) / 2
+    repeatability_in_range1 = 0.07
+    repeatability_in_range2 = 0.15
+    if  (7 <= original_extract_S1 <= 12) \
+    and (7 <= original_extract_S2 <= 12) \
+    and (abs(original_extract_S1 - original_extract_S2) <= repeatability_in_range1):
+        R95 = 0.19
+        uncertainty = (R95 / 2.77) * 2
+        return ufloat(mean, uncertainty)
+    elif (round(mean, 1) == 19.0) \
+    and (abs(original_extract_S1 - original_extract_S2) <= repeatability_in_range2):
+        R95 = 0.38
+        uncertainty = (R95 / 2.77) * 2
+        return ufloat(mean, uncertainty)
+    else:
+        return mean
+
+# Function for average apparent extract. Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.2.1.3 Apparent extract, % Plato
 def average_apparent_extract(apparent_extract_S1, apparent_extract_S2):
-    return (apparent_extract_S1 + apparent_extract_S2) / 2
+    mean = (apparent_extract_S1 + apparent_extract_S2) / 2
+    repeatability = 0.018
+    if  (1.5 <= apparent_extract_S1 <= 3.0) \
+    and (1.5 <= apparent_extract_S2 <= 3.0) \
+    and (abs(apparent_extract_S1 - apparent_extract_S2) <= repeatability):
+        R95 = 0.080
+        uncertainty = (R95 / 2.77) * 2
+        return ufloat(mean, uncertainty)
+    else:
+        return mean
 
+# Function for average original gravity. Reference:
+# Series: Analytica EBC
+# Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
+# Section: 9.2.2 The precision values for original gravity (ºSacch.)
+def average_original_gravity(original_gravity_S1, original_gravity_S2):
+    mean = (original_gravity_S1 + original_gravity_S2) / 2
+    repeatability = 0.53
+    if  (31 <= original_gravity_S1 <= 34) \
+    and (31 <= original_gravity_S2 <= 34) \
+    and (abs(original_gravity_S1 - original_gravity_S2) <= repeatability):
+        R95 = 1.11
+        uncertainty = (R95 / 2.77) * 2
+        return ufloat(mean, uncertainty)
+    else:
+        return mean
+
+# Function for average real degree of fermentation of beer (RDF). Reference:
+# Series: Analytica EBC
+# Document: 9.5 REAL DEGREE OF FERMENTATION OF BEER 1997
+# Section: 5.2.2 Real degree of fermentation %
 def average_real_degree_of_fermentation (real_degree_of_fermentation_S1, real_degree_of_fermentation_S2):
-    return (real_degree_of_fermentation_S1 + real_degree_of_fermentation_S2) / 2
+    mean = (real_degree_of_fermentation_S1 + real_degree_of_fermentation_S2) / 2
+    repeatability = 0.21
+    if  (63 <= real_degree_of_fermentation_S1 <= 71) \
+    and (63 <= real_degree_of_fermentation_S2 <= 71) \
+    and (abs(real_degree_of_fermentation_S1 - real_degree_of_fermentation_S2) <= repeatability):
+        R95 = 0.61
+        uncertainty = (R95 / 2.77) * 2
+        return ufloat(mean, uncertainty)
+    else:
+        return mean
 
 def average_apparent_degree_of_fermentation(apparent_degree_of_fermentation_S1, apparent_degree_of_fermentation_S2):
     return (apparent_degree_of_fermentation_S1 + apparent_degree_of_fermentation_S2) /2
-
-def average_original_gravity(original_gravity_S1, original_gravity_S2):
-    return (original_gravity_S1 + original_gravity_S2) / 2
 
 def average_beer_pH(pH_S1, pH_S2):
     return (pH_S1 + pH_S2) / 2
