@@ -413,20 +413,21 @@ beer_pH_S2 = widgets.FloatText(
 # Output widgets.
 # These are used to show results inside notebook.
 
-output_series1 = widgets.Textarea(
+tab1_output = widgets.Textarea(
     layout={'height': '100%', 'width': '95%'}
 )
 
-output_box1 = widgets.VBox(
-    [output_series1], 
+tab1_box = widgets.VBox(
+    [tab1_output],
     layout={'height': '580px', 'width': '450px'}
 )
 
-output_series2 = widgets.Textarea(
+
+tab2_output = widgets.Textarea(
     layout={'height': '100%', 'width': '95%'}
 )
 
-output_box2 = widgets.VBox(
-    [output_series2],
+tab2_box = widgets.VBox(
+    [tab2_output],
     layout={'height': '580px', 'width': '450px'}
 )

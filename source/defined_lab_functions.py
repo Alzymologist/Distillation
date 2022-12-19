@@ -1,5 +1,3 @@
-from uncertainties import ufloat # Floating numbers with uncertainty
-
 def difference(base, deduct):
     return base - deduct
 
@@ -98,21 +96,36 @@ def residue_gravity(SGER):
 def original_gravity(D, RG):
     return D + RG
 
+### Average function section ###
+# Functions in this section calculate averages and sometimes some statistical results.
+# Conventions for all functions in this section:
+# If any warnings are triggered, function will return tuple(mean, warnings: str).
+# If no warnings are triggered, function can return int, float, ufloat, but never tuple.
+
+from uncertainties import ufloat # Floating numbers with uncertainty
+range_warning = "The measurements are outside the expected range."
+repeatability_warning = "Difference between the measurements exceeds the repeatability."
+
 # Function for average alcohol content by volume. Reference:
 # Series: Analytica EBC
 # Document: 9.2.1 ALCOHOL IN BEER BY DISTILLATION – 2008
 # Section: 10.1 1995/1996 trial Alcohol in % (V/V)
 def average_alcohol_content_by_volume(alcohol_content_S1, alcohol_content_S2):
     mean = (alcohol_content_S1 + alcohol_content_S2) / 2
-    repeatability = 0.062
-    if  (0.84 <= alcohol_content_S1 <= 7.27) \
-    and (0.84 <= alcohol_content_S2 <= 7.27) \
-    and (abs(alcohol_content_S1 - alcohol_content_S2) <= repeatability):
+    range_criterion = (0.84 <= alcohol_content_S1 <= 7.27) and (0.84 <= alcohol_content_S2 <= 7.27)
+    repeatability_criterion = abs(alcohol_content_S1 - alcohol_content_S2) <= 0.062
+
+    if range_criterion and repeatability_criterion:
         R95 = 0.07 + 0.02 * mean
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
     else:
-        return mean
+        warnings = []
+        if not range_criterion:
+            warnings.append(range_warning)
+        if not repeatability_criterion:
+            warnings.append(repeatability_warning)
+        return (mean, warnings)
 
 # Function for average alcohol content by mass. Reference:
 # Series: Analytica EBC
@@ -120,28 +133,35 @@ def average_alcohol_content_by_volume(alcohol_content_S1, alcohol_content_S2):
 # Section: 10.2 1996 trial - 10.2.1 Alcohol in % (m/m)
 def average_alcohol_content_by_mass(alcohol_content_S1, alcohol_content_S2):
     mean = (alcohol_content_S1 + alcohol_content_S2) / 2
-    repeatability = 0.03 + 0.005 * mean
-    if  (1.72 <= alcohol_content_S1 <=7.00) \
-    and (1.72 <= alcohol_content_S2 <=7.00) \
-    and (abs(alcohol_content_S1 - alcohol_content_S2) <= repeatability):
+    range_criterion = (1.72 <= alcohol_content_S1 <=7.00) and (1.72 <= alcohol_content_S2 <=7.00)
+    repeatability_criterion = abs(alcohol_content_S1 - alcohol_content_S2) <= 0.03 + 0.005 * mean
+
+    if range_criterion and repeatability_criterion:
         R95 = 0.03 + 0.02 * mean
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
     else:
-        return mean
+        warnings = []
+        if not range_criterion:
+            warnings.append(range_warning)
+        if not repeatability_criterion:
+            warnings.append(repeatability_warning)
+        return (mean, warnings)
 
 # Function for average specific gravity. Reference:
 # Series: Analytica EBC
 # Document: 8.2.1 SPECIFIC GRAVITY OF WORT USING A PYKNOMETER – 2004
 # Section: 8.2.2 Carry out duplicate determinations
 def average_specific_gravity_of_beer(specific_gravity_S1, specific_gravity_S2):
-    rounded_specific_gravity_S1 = round(specific_gravity_S1, 4)
-    rounded_specific_gravity_S2 = round(specific_gravity_S2, 4)
-    if abs(rounded_specific_gravity_S1 - rounded_specific_gravity_S2) <= 0.0002:
-        mean = (specific_gravity_S1 + specific_gravity_S2) / 2
-        return mean 
+    mean = (specific_gravity_S1 + specific_gravity_S2) / 2
+    repeatability_criterion = abs(round(specific_gravity_S1, 4) - round(specific_gravity_S2, 4)) <= 0.0002
+
+    if repeatability_criterion:
+        return mean
     else:
-        return None
+        warnings = []
+        warnings.append(repeatability_warning)
+        return (mean, warnings)
 
 # Function for average real extract. Reference:
 # Series: Analytica EBC
@@ -149,15 +169,20 @@ def average_specific_gravity_of_beer(specific_gravity_S1, specific_gravity_S2):
 # Section: 9.2.1.1 Real extract, % Plato
 def average_real_extract(real_extract_S1, real_extract_S2):
     mean = (real_extract_S1 + real_extract_S2) / 2
-    repeatability =  0.02
-    if  (2.9 <= real_extract_S1 <= 6.0) \
-    and (2.9 <= real_extract_S2 <= 6.0) \
-    and (abs(real_extract_S1 - real_extract_S2) <= repeatability):
+    range_criterion = (2.9 <= real_extract_S1 <= 6.0) and (2.9 <= real_extract_S2 <= 6.0)
+    repeatability_criterion = (abs(real_extract_S1 - real_extract_S2) <= 0.02)
+
+    if range_criterion and repeatability_criterion:
         R95 = 0.02 * mean
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
     else:
-        return mean
+        warnings = []
+        if not range_criterion:
+            warnings.append(range_warning)
+        if not repeatability_criterion:
+            warnings.append(repeatability_warning)
+        return (mean, warnings)
 
 # Function for average original extract. Reference:
 # Series: Analytica EBC
@@ -165,21 +190,27 @@ def average_real_extract(real_extract_S1, real_extract_S2):
 # Section: 9.2.1.2 Original extract, % Plato
 def average_original_extract(original_extract_S1, original_extract_S2):
     mean = (original_extract_S1 + original_extract_S2) / 2
-    repeatability_in_range1 = 0.07
-    repeatability_in_range2 = 0.15
-    if  (7 <= original_extract_S1 <= 12) \
-    and (7 <= original_extract_S2 <= 12) \
-    and (abs(original_extract_S1 - original_extract_S2) <= repeatability_in_range1):
+    range1_criterion = (7 <= original_extract_S1 <= 12) and (7 <= original_extract_S2 <= 12)
+    range2_criterion = (round(mean, 1) == 19.0)
+    repeatability_for_range1_criterion = abs(original_extract_S1 - original_extract_S2) <= 0.07
+    repeatability_for_range2_criterion = abs(original_extract_S1 - original_extract_S2) <= 0.15
+
+    if (range1_criterion and repeatability_for_range1_criterion):
         R95 = 0.19
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
-    elif (round(mean, 1) == 19.0) \
-    and (abs(original_extract_S1 - original_extract_S2) <= repeatability_in_range2):
+    elif (range2_criterion and repeatability_for_range2_criterion):
         R95 = 0.38
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
     else:
-        return mean
+        warnings = []
+        if not any(range1_criterion, range2_criterion):
+            warnings.append(range_warning)
+        if (not range2_criterion) and (not repeatability_for_range1_criterion) \
+        or range2_criterion and (not repeatability_for_range2_criterion): # Repeatability for range1 is used as criterion if not in range2.
+            warnings.append(repeatability_warning)
+        return (mean, warnings)
 
 # Function for average apparent extract. Reference:
 # Series: Analytica EBC
@@ -187,15 +218,19 @@ def average_original_extract(original_extract_S1, original_extract_S2):
 # Section: 9.2.1.3 Apparent extract, % Plato
 def average_apparent_extract(apparent_extract_S1, apparent_extract_S2):
     mean = (apparent_extract_S1 + apparent_extract_S2) / 2
-    repeatability = 0.018
-    if  (1.5 <= apparent_extract_S1 <= 3.0) \
-    and (1.5 <= apparent_extract_S2 <= 3.0) \
-    and (abs(apparent_extract_S1 - apparent_extract_S2) <= repeatability):
+    range_criterion = (1.5 <= apparent_extract_S1 <= 3.0) and (1.5 <= apparent_extract_S2 <= 3.0)
+    repeatability_criterion = abs(apparent_extract_S1 - apparent_extract_S2) <=  0.018
+    if range_criterion and repeatability_criterion:
         R95 = 0.080
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
     else:
-        return mean
+        warnings = []
+        if not range_criterion:
+            warnings.append(range_warning)
+        if not repeatability_criterion:
+            warnings.append(repeatability_warning)
+        return (mean, warnings)
 
 # Function for average original gravity. Reference:
 # Series: Analytica EBC
@@ -203,15 +238,20 @@ def average_apparent_extract(apparent_extract_S1, apparent_extract_S2):
 # Section: 9.2.2 The precision values for original gravity (ºSacch.)
 def average_original_gravity(original_gravity_S1, original_gravity_S2):
     mean = (original_gravity_S1 + original_gravity_S2) / 2
-    repeatability = 0.53
-    if  (31 <= original_gravity_S1 <= 34) \
-    and (31 <= original_gravity_S2 <= 34) \
-    and (abs(original_gravity_S1 - original_gravity_S2) <= repeatability):
+    range_criterion = (31 <= original_gravity_S1 <= 34) and (31 <= original_gravity_S2 <= 34)
+    repeatability_criterion = abs(original_gravity_S1 - original_gravity_S2) <= 0.53
+
+    if range_criterion and repeatability_criterion:
         R95 = 1.11
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
     else:
-        return mean
+        warnings = []
+        if not range_criterion:
+            warnings.append(range_warning)
+        if not repeatability_criterion:
+            warnings.append(repeatability_warning)
+        return (mean, warnings)
 
 # Function for average real degree of fermentation of beer (RDF). Reference:
 # Series: Analytica EBC
@@ -219,15 +259,27 @@ def average_original_gravity(original_gravity_S1, original_gravity_S2):
 # Section: 5.2.2 Real degree of fermentation %
 def average_real_degree_of_fermentation (real_degree_of_fermentation_S1, real_degree_of_fermentation_S2):
     mean = (real_degree_of_fermentation_S1 + real_degree_of_fermentation_S2) / 2
-    repeatability = 0.21
-    if  (63 <= real_degree_of_fermentation_S1 <= 71) \
-    and (63 <= real_degree_of_fermentation_S2 <= 71) \
-    and (abs(real_degree_of_fermentation_S1 - real_degree_of_fermentation_S2) <= repeatability):
+    range1_criterion = (63 <= real_degree_of_fermentation_S1 <= 71) and (63 <= real_degree_of_fermentation_S2 <= 71)
+    range2_criterion = (round(mean, 1) == 50.0)
+    repeatability_for_range1_criterion = abs(real_degree_of_fermentation_S1 - real_degree_of_fermentation_S2) <= 0.21
+    repeatability_for_range2_criterion = abs(real_degree_of_fermentation_S1 - real_degree_of_fermentation_S2) <= 0.50
+
+    if (range1_criterion and repeatability_for_range1_criterion):
         R95 = 0.61
         uncertainty = (R95 / 2.77) * 2
         return ufloat(mean, uncertainty)
+    elif (range2_criterion and repeatability_for_range2_criterion):
+        R95 =  1.16
+        uncertainty = (R95 / 2.77) * 2
+        return ufloat(mean, uncertainty)
     else:
-        return mean
+        warnings = []
+        if not any(range1_criterion, range2_criterion):
+            warnings.append(range_warning)
+        if (not range2_criterion) and (not repeatability_for_range1_criterion) \
+        or range2_criterion and (not repeatability_for_range2_criterion): # Repeatability for range1 is used as criterion if not in range2.
+            warnings.append(repeatability_warning)
+        return (mean, warnings)
 
 def average_apparent_degree_of_fermentation(apparent_degree_of_fermentation_S1, apparent_degree_of_fermentation_S2):
     return (apparent_degree_of_fermentation_S1 + apparent_degree_of_fermentation_S2) /2
