@@ -113,20 +113,84 @@ results_sending_method = widgets.Dropdown(
     style=dict(description_width=common_description_width),
     layout=dict(width=common_width),
 )
+# Widgets for pdf printing
+print_label = widgets.Label("Select the data to include in the PDF report:")
 
-tag_selector = widgets.TagsInput(
-    description="Choose data for report",
-    allow_duplicates=False,
-    allowed_tags = [] # Allowed tags will be listed dynamically to avoid repetition and keep consistency (see "tag_names").
+print_average_alcohol_content_by_mass = widgets.Checkbox(
+    description="Alcoholic strength by mass",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
 )
 
-generate_pdf_button = widgets.Button(
-    description="Create report",
+print_average_alcohol_content_by_volume = widgets.Checkbox(
+    description="Alcoholic strength by volume (ABV)",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+print_average_real_extract = widgets.Checkbox(
+    description="Real extract",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+print_average_original_extract = widgets.Checkbox(
+    description="Original extract",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+print_average_apparent_extract = widgets.Checkbox(
+    description="Apparent extract",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+print_average_apparent_degree_of_fermentation = widgets.Checkbox(
+    description="Apparent degree of fermentation (ADF)",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+print_average_real_degree_of_fermentation = widgets.Checkbox(
+    description="Real degree of fermentation (RDF)",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+print_average_specific_gravity_of_beer = widgets.Checkbox(
+    description="Specific gravity",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+print_average_original_gravity = widgets.Checkbox(
+    description="Original gravity",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+print_average_beer_pH = widgets.Checkbox(
+    description="pH",
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+print_select_all_button = widgets.Button(
+    description="Select all",
     button_style='info',
-    tooltip='Creates a PDF report with selected data.',
+    tooltip='Select all of the above.',
 )
 
-# Lab widgets for Series #1
+print_gap = widgets.Label("\xa0")
+
+print_pdf_button = widgets.Button(
+    description="Create report",
+    button_style='primary',
+    tooltip='Create a PDF report with the selected data.',
+)
+
+# Lab widgets for Series 1
 
 mass_of_distillation_flask_empty_S1 = widgets.FloatText(
     description='Mass of distillation flask (empty), g',
@@ -177,6 +241,20 @@ was_5ml_of_water_added_to_receiver_flask_S1  = widgets.Dropdown(
     layout=dict(width=common_width),
 )
 
+was_temperature_of_thermostatic_bath_20C_S1 = widgets.Dropdown(
+    description="Was the temperature of thermostatic bath  20.0 °C ?",
+    options=["", True, False],
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+was_distillation_time_30_to_60_min_S1 = widgets.Dropdown(
+    description="Was distillation time 30-60 minutes?",
+    options=["", True, False],
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
 temperature_in_condenser_S1 = widgets.IntSlider(
     description="Temperature in condenser, °C",
     style=dict(description_width='initial'),
@@ -193,18 +271,6 @@ temperature_in_receiver_bath_S1 = widgets.IntSlider(
     step=1,
     min=0,
     max=25,
-)
-
-was_temperature_of_thermostatic_bath_20C_S1 = widgets.Checkbox(
-    description="Was the temperature of thermostatic bath  20.0 °C ?",
-    style=dict(description_width='initial'),
-    layout=dict(width=common_width),
-)
-
-was_distillation_time_30_to_60_min_S1 = widgets.Checkbox(
-    description="Was distillation time 30-60 minutes?",
-    style=dict(description_width='initial'),
-    layout=dict(width=common_width),
 )
 
 pycnometer_number_S1 = widgets.FloatText(
@@ -248,27 +314,28 @@ mass_of_pycnometer_with_residue_S1 = widgets.FloatText(
     layout=dict(width=common_width),
 )
 
-was_first_step_of_decarbonisation_done_S1 = widgets.Checkbox(
+was_first_step_of_decarbonisation_done_S1 = widgets.Dropdown(
     description="Was the 1st step of decarbonisation done?",
+    options=["", True, False],
     style=dict(description_width='initial'),
     layout=dict(width=common_width),
 )
 
-was_second_step_of_decarbonisation_done_S1 = widgets.Checkbox(
+was_second_step_of_decarbonisation_done_S1 = widgets.Dropdown(
     description="Was the 2nd step of decarbonisation done?",
+    options=["", True, False],
     style=dict(description_width='initial'),
     layout=dict(width=common_width),
 )
-
 
 beer_pH_S1 = widgets.FloatText(
     description='pH value of the decarbonized beer',
-    step=0.01,
+    step=0.001,
     style=dict(description_width='initial'),
     layout=dict(width=common_width),
 )
 
-# Lab widgets for Series #2
+# Lab widgets for Series 2
 # These widgets are copies of widgets for Series 1, but with "_S1" -> "_S2" strings replaced.
 
 mass_of_distillation_flask_empty_S2 = widgets.FloatText(
@@ -320,6 +387,20 @@ was_5ml_of_water_added_to_receiver_flask_S2  = widgets.Dropdown(
     layout=dict(width=common_width),
 )
 
+was_temperature_of_thermostatic_bath_20C_S2 = widgets.Dropdown(
+    description="Was the temperature of thermostatic bath  20.0 °C ?",
+    options=["", True, False],
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
+was_distillation_time_30_to_60_min_S2 = widgets.Dropdown(
+    description="Was distillation time 30-60 minutes?",
+    options=["", True, False],
+    style=dict(description_width='initial'),
+    layout=dict(width=common_width),
+)
+
 temperature_in_condenser_S2 = widgets.IntSlider(
     description="Temperature in condenser, °C",
     style=dict(description_width='initial'),
@@ -336,18 +417,6 @@ temperature_in_receiver_bath_S2 = widgets.IntSlider(
     step=1,
     min=0,
     max=25,
-)
-
-was_temperature_of_thermostatic_bath_20C_S2 = widgets.Checkbox(
-    description="Was the temperature of thermostatic bath  20.0 °C ?",
-    style=dict(description_width='initial'),
-    layout=dict(width=common_width),
-)
-
-was_distillation_time_30_to_60_min_S2 = widgets.Checkbox(
-    description="Was distillation time 30-60 minutes?",
-    style=dict(description_width='initial'),
-    layout=dict(width=common_width),
 )
 
 pycnometer_number_S2 = widgets.FloatText(
@@ -391,21 +460,23 @@ mass_of_pycnometer_with_residue_S2 = widgets.FloatText(
     layout=dict(width=common_width),
 )
 
-was_first_step_of_decarbonisation_done_S2 = widgets.Checkbox(
+was_first_step_of_decarbonisation_done_S2 = widgets.Dropdown(
     description="Was the 1st step of decarbonisation done?",
+    options=["", True, False],
     style=dict(description_width='initial'),
     layout=dict(width=common_width),
 )
 
-was_second_step_of_decarbonisation_done_S2 = widgets.Checkbox(
+was_second_step_of_decarbonisation_done_S2 = widgets.Dropdown(
     description="Was the 2nd step of decarbonisation done?",
+    options=["", True, False],
     style=dict(description_width='initial'),
     layout=dict(width=common_width),
 )
 
 beer_pH_S2 = widgets.FloatText(
     description='pH value of the decarbonized beer',
-    step=0.01,
+    step=0.001,
     style=dict(description_width='initial'),
     layout=dict(width=common_width),
 )
@@ -421,7 +492,6 @@ tab1_box = widgets.VBox(
     [tab1_output],
     layout={'height': '580px', 'width': '450px'}
 )
-
 
 tab2_output = widgets.Textarea(
     layout={'height': '100%', 'width': '95%'}

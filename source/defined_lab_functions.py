@@ -1,3 +1,11 @@
+from uncertainties import ufloat # Floating numbers with confidence interval
+range_warning = "At least one measurement is outside the expected range."
+repeatability_warning = "Difference between the measurements exceeds the repeatability."
+
+# Conventions for all functions in this file:
+# If any warnings are triggered, function will return tuple(mean, warnings: str).
+# If no warnings are triggered, function can return int, float, ufloat, but never tuple.
+
 def difference(base, deduct):
     return base - deduct
 
@@ -98,13 +106,6 @@ def original_gravity(D, RG):
 
 ### Average function section ###
 # Functions in this section calculate averages and sometimes some statistical results.
-# Conventions for all functions in this section:
-# If any warnings are triggered, function will return tuple(mean, warnings: str).
-# If no warnings are triggered, function can return int, float, ufloat, but never tuple.
-
-from uncertainties import ufloat # Floating numbers with uncertainty
-range_warning = "The measurements are outside the expected range."
-repeatability_warning = "Difference between the measurements exceeds the repeatability."
 
 # Function for average alcohol content by volume. Reference:
 # Series: Analytica EBC
@@ -117,8 +118,7 @@ def average_alcohol_content_by_volume(alcohol_content_S1, alcohol_content_S2):
 
     if range_criterion and repeatability_criterion:
         R95 = 0.07 + 0.02 * mean
-        uncertainty = (R95 / 2.77) * 2
-        return ufloat(mean, uncertainty)
+        return ufloat(mean, R95) # Here and below we report 95% confidential interval.
     else:
         warnings = []
         if not range_criterion:
@@ -138,8 +138,7 @@ def average_alcohol_content_by_mass(alcohol_content_S1, alcohol_content_S2):
 
     if range_criterion and repeatability_criterion:
         R95 = 0.03 + 0.02 * mean
-        uncertainty = (R95 / 2.77) * 2
-        return ufloat(mean, uncertainty)
+        return ufloat(mean, R95)
     else:
         warnings = []
         if not range_criterion:
@@ -174,8 +173,7 @@ def average_real_extract(real_extract_S1, real_extract_S2):
 
     if range_criterion and repeatability_criterion:
         R95 = 0.02 * mean
-        uncertainty = (R95 / 2.77) * 2
-        return ufloat(mean, uncertainty)
+        return ufloat(mean, R95)
     else:
         warnings = []
         if not range_criterion:
@@ -197,15 +195,13 @@ def average_original_extract(original_extract_S1, original_extract_S2):
 
     if (range1_criterion and repeatability_for_range1_criterion):
         R95 = 0.19
-        uncertainty = (R95 / 2.77) * 2
-        return ufloat(mean, uncertainty)
+        return ufloat(mean, R95)
     elif (range2_criterion and repeatability_for_range2_criterion):
         R95 = 0.38
-        uncertainty = (R95 / 2.77) * 2
-        return ufloat(mean, uncertainty)
+        return ufloat(mean, R95)
     else:
         warnings = []
-        if not any(range1_criterion, range2_criterion):
+        if not (range1_criterion or range2_criterion):
             warnings.append(range_warning)
         if (not range2_criterion) and (not repeatability_for_range1_criterion) \
         or range2_criterion and (not repeatability_for_range2_criterion): # Repeatability for range1 is used as criterion if not in range2.
@@ -222,8 +218,7 @@ def average_apparent_extract(apparent_extract_S1, apparent_extract_S2):
     repeatability_criterion = abs(apparent_extract_S1 - apparent_extract_S2) <=  0.018
     if range_criterion and repeatability_criterion:
         R95 = 0.080
-        uncertainty = (R95 / 2.77) * 2
-        return ufloat(mean, uncertainty)
+        return ufloat(mean, R95)
     else:
         warnings = []
         if not range_criterion:
@@ -243,8 +238,7 @@ def average_original_gravity(original_gravity_S1, original_gravity_S2):
 
     if range_criterion and repeatability_criterion:
         R95 = 1.11
-        uncertainty = (R95 / 2.77) * 2
-        return ufloat(mean, uncertainty)
+        return ufloat(mean, R95)
     else:
         warnings = []
         if not range_criterion:
@@ -266,15 +260,13 @@ def average_real_degree_of_fermentation (real_degree_of_fermentation_S1, real_de
 
     if (range1_criterion and repeatability_for_range1_criterion):
         R95 = 0.61
-        uncertainty = (R95 / 2.77) * 2
-        return ufloat(mean, uncertainty)
+        return ufloat(mean, R95)
     elif (range2_criterion and repeatability_for_range2_criterion):
         R95 =  1.16
-        uncertainty = (R95 / 2.77) * 2
-        return ufloat(mean, uncertainty)
+        return ufloat(mean, R95)
     else:
         warnings = []
-        if not any(range1_criterion, range2_criterion):
+        if not (range1_criterion or range2_criterion):
             warnings.append(range_warning)
         if (not range2_criterion) and (not repeatability_for_range1_criterion) \
         or range2_criterion and (not repeatability_for_range2_criterion): # Repeatability for range1 is used as criterion if not in range2.
