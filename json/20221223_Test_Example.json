@@ -1,0 +1,591 @@
+{
+    "FUNCTIONS": {
+        "average_series": {
+            "average_alcohol_content_by_mass": {
+                "arguments": {
+                    "alcohol_content_S1": 5.081239637530849,
+                    "alcohol_content_S2": 4.971833150219619
+                },
+                "decimal_places": 2,
+                "formatted_result": "5.03",
+                "method": "9.2.1 EBC",
+                "natural_name": "Alcoholic strength by mass",
+                "nominal_result": 5.026536393875234,
+                "uncertainty": null,
+                "unit": "% (m/m)",
+                "warnings": [
+                    "Difference between the measurements exceeds the repeatability."
+                ]
+            },
+            "average_alcohol_content_by_volume": {
+                "arguments": {
+                    "alcohol_content_S1": 6.505907237918522,
+                    "alcohol_content_S2": 6.365636317268085
+                },
+                "decimal_places": 2,
+                "formatted_result": "6.44",
+                "method": "9.2.1 EBC",
+                "natural_name": "Alcoholic strength by volume (ABV)",
+                "nominal_result": 6.435771777593303,
+                "uncertainty": null,
+                "unit": "% (v/v)",
+                "warnings": [
+                    "Difference between the measurements exceeds the repeatability."
+                ]
+            },
+            "average_apparent_degree_of_fermentation": {
+                "arguments": {
+                    "apparent_degree_of_fermentation_S1": 78.62749732033903,
+                    "apparent_degree_of_fermentation_S2": 78.39341347408948
+                },
+                "decimal_places": 1,
+                "formatted_result": "78.5",
+                "method": "Beer-6 ASBC",
+                "natural_name": "Apparent degree of fermentation (ADF)",
+                "nominal_result": 78.51045539721426,
+                "uncertainty": null,
+                "unit": "%",
+                "warnings": null
+            },
+            "average_apparent_extract": {
+                "arguments": {
+                    "apparent_extract_S1": 3.2626311428132624,
+                    "apparent_extract_S2": 3.255023367352578
+                },
+                "decimal_places": 2,
+                "formatted_result": "3.26",
+                "method": "9.4 EBC",
+                "natural_name": "Apparent extract",
+                "nominal_result": 3.2588272550829203,
+                "uncertainty": null,
+                "unit": "% Plato",
+                "warnings": [
+                    "At least one measurement is outside the expected range."
+                ]
+            },
+            "average_beer_pH": {
+                "arguments": {
+                    "pH_S1": 4.31,
+                    "pH_S2": 4.33
+                },
+                "decimal_places": 3,
+                "formatted_result": "4.320",
+                "method": "",
+                "natural_name": "pH",
+                "nominal_result": 4.32,
+                "uncertainty": null,
+                "unit": "",
+                "warnings": null
+            },
+            "average_original_extract": {
+                "arguments": {
+                    "original_extract_S1": 15.265554959635724,
+                    "original_extract_S2": 15.064958842291771
+                },
+                "decimal_places": 2,
+                "formatted_result": "15.17",
+                "method": "9.4 EBC",
+                "natural_name": "Original extract",
+                "nominal_result": 15.165256900963747,
+                "uncertainty": null,
+                "unit": "% Plato",
+                "warnings": [
+                    "At least one measurement is outside the expected range.",
+                    "Difference between the measurements exceeds the repeatability."
+                ]
+            },
+            "average_original_gravity": {
+                "arguments": {
+                    "original_gravity_S1": 61.86684742176352,
+                    "original_gravity_S2": 61.041883602640596
+                },
+                "decimal_places": 1,
+                "formatted_result": "61.5",
+                "method": "9.4 EBC",
+                "natural_name": "Original gravity",
+                "nominal_result": 61.45436551220206,
+                "uncertainty": null,
+                "unit": "\u00b0Sacch.",
+                "warnings": [
+                    "At least one measurement is outside the expected range.",
+                    "Difference between the measurements exceeds the repeatability."
+                ]
+            },
+            "average_real_degree_of_fermentation": {
+                "arguments": {
+                    "real_degree_of_fermentation_S1": 65.24887261505114,
+                    "real_degree_of_fermentation_S2": 64.76576334997057
+                },
+                "decimal_places": 1,
+                "formatted_result": "65.0",
+                "method": "9.5 EBC",
+                "natural_name": "Real degree of fermentation (RDF)",
+                "nominal_result": 65.00731798251086,
+                "uncertainty": null,
+                "unit": "%",
+                "warnings": [
+                    "Difference between the measurements exceeds the repeatability."
+                ]
+            },
+            "average_real_extract": {
+                "arguments": {
+                    "real_extract_S1": 5.592435360237914,
+                    "real_extract_S2": 5.589479062233835
+                },
+                "decimal_places": 2,
+                "formatted_result": "5.59 \u00b1 0.11",
+                "method": "9.4 EBC",
+                "natural_name": "Real extract",
+                "nominal_result": 5.5909572112358745,
+                "uncertainty": 0.11181914422471749,
+                "unit": "% Plato",
+                "warnings": null
+            },
+            "average_specific_gravity_of_beer": {
+                "arguments": {
+                    "specific_gravity_S1": 1.0127789658222566,
+                    "specific_gravity_S2": 1.012748854361019
+                },
+                "decimal_places": 5,
+                "formatted_result": "1.01276",
+                "method": "9.43.1 EBC",
+                "natural_name": "Specific gravity",
+                "nominal_result": 1.0127639100916377,
+                "uncertainty": null,
+                "unit": "",
+                "warnings": null
+            }
+        },
+        "first_series": {
+            "alcohol_content_by_mass": {
+                "arguments": {
+                    "SGA": 0.9910187830830454
+                },
+                "decimal_places": 2,
+                "formatted_result": "5.08",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 5.081239637530849,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "alcohol_content_by_volume": {
+                "arguments": {
+                    "A_by_mass": 5.081239637530849,
+                    "SGEA": 1.0127789658222566
+                },
+                "decimal_places": 2,
+                "formatted_result": "6.51",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 6.505907237918522,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "apparent_degree_of_fermentation": {
+                "arguments": {
+                    "apparent_extract": 3.2626311428132624,
+                    "original_extract": 15.265554959635724
+                },
+                "decimal_places": 1,
+                "formatted_result": "78.6",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 78.62749732033903,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "apparent_extract": {
+                "arguments": {
+                    "specific_gravity": 1.0127789658222566
+                },
+                "decimal_places": 2,
+                "formatted_result": "3.26",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 3.2626311428132624,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "degrees_of_gravity_lost": {
+                "arguments": {
+                    "S": 8.981216916954637
+                },
+                "decimal_places": 1,
+                "formatted_result": "39.8",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 39.79717410404449,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "original_extract": {
+                "arguments": {
+                    "A_by_mass": 5.081239637530849,
+                    "real_extract": 5.592435360237914
+                },
+                "decimal_places": 2,
+                "formatted_result": "15.27",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 15.265554959635724,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "original_gravity": {
+                "arguments": {
+                    "D": 39.79717410404449,
+                    "RG": 22.06967331771903
+                },
+                "decimal_places": 1,
+                "formatted_result": "61.9",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 61.86684742176352,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "real_degree_of_fermentation": {
+                "arguments": {
+                    "A_by_mass": 5.081239637530849,
+                    "real_extract": 5.592435360237914
+                },
+                "decimal_places": 1,
+                "formatted_result": "65.2",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 65.24887261505114,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "real_extract": {
+                "arguments": {
+                    "specific_gravity": 1.022069673317719
+                },
+                "decimal_places": 2,
+                "formatted_result": "5.59",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 5.592435360237914,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "residue_gravity": {
+                "arguments": {
+                    "SGER": 1.022069673317719
+                },
+                "decimal_places": 1,
+                "formatted_result": "22.1",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 22.06967331771903,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "specific_gravity_of_beer": {
+                "arguments": {
+                    "mass_empty": 30.6907,
+                    "mass_with_substance": 81.413,
+                    "mass_with_water": 80.773
+                },
+                "decimal_places": 5,
+                "formatted_result": "1.01278",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 1.0127789658222566,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "specific_gravity_of_distillate": {
+                "arguments": {
+                    "mass_empty": 30.6907,
+                    "mass_with_substance": 80.3232,
+                    "mass_with_water": 80.773
+                },
+                "decimal_places": 5,
+                "formatted_result": "0.99102",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 0.9910187830830454,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "specific_gravity_of_residue": {
+                "arguments": {
+                    "mass_empty": 30.6907,
+                    "mass_with_substance": 81.8783,
+                    "mass_with_water": 80.773
+                },
+                "decimal_places": 5,
+                "formatted_result": "1.02207",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 1.022069673317719,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "spirit_indication": {
+                "arguments": {
+                    "SGA": 0.9910187830830454
+                },
+                "decimal_places": 1,
+                "formatted_result": "9.0",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 8.981216916954637,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            }
+        },
+        "second_series": {
+            "alcohol_content_by_mass": {
+                "arguments": {
+                    "SGA": 0.9911964586071745
+                },
+                "decimal_places": 2,
+                "formatted_result": "4.97",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 4.971833150219619,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "alcohol_content_by_volume": {
+                "arguments": {
+                    "A_by_mass": 4.971833150219619,
+                    "SGEA": 1.012748854361019
+                },
+                "decimal_places": 2,
+                "formatted_result": "6.37",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 6.365636317268085,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "apparent_degree_of_fermentation": {
+                "arguments": {
+                    "apparent_extract": 3.255023367352578,
+                    "original_extract": 15.064958842291771
+                },
+                "decimal_places": 1,
+                "formatted_result": "78.4",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 78.39341347408948,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "apparent_extract": {
+                "arguments": {
+                    "specific_gravity": 1.012748854361019
+                },
+                "decimal_places": 2,
+                "formatted_result": "3.26",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 3.255023367352578,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "degrees_of_gravity_lost": {
+                "arguments": {
+                    "S": 8.803541392825466
+                },
+                "decimal_places": 1,
+                "formatted_result": "39.0",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 38.98408826350361,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "original_extract": {
+                "arguments": {
+                    "A_by_mass": 4.971833150219619,
+                    "real_extract": 5.589479062233835
+                },
+                "decimal_places": 2,
+                "formatted_result": "15.06",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 15.064958842291771,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "original_gravity": {
+                "arguments": {
+                    "D": 38.98408826350361,
+                    "RG": 22.057795339136987
+                },
+                "decimal_places": 1,
+                "formatted_result": "61.0",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 61.041883602640596,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "real_degree_of_fermentation": {
+                "arguments": {
+                    "A_by_mass": 4.971833150219619,
+                    "real_extract": 5.589479062233835
+                },
+                "decimal_places": 1,
+                "formatted_result": "64.8",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 64.76576334997057,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "real_extract": {
+                "arguments": {
+                    "specific_gravity": 1.022057795339137
+                },
+                "decimal_places": 2,
+                "formatted_result": "5.59",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 5.589479062233835,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "residue_gravity": {
+                "arguments": {
+                    "SGER": 1.022057795339137
+                },
+                "decimal_places": 1,
+                "formatted_result": "22.1",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 22.057795339136987,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "specific_gravity_of_beer": {
+                "arguments": {
+                    "mass_empty": 30.7931,
+                    "mass_with_substance": 81.4907,
+                    "mass_with_water": 80.8525
+                },
+                "decimal_places": 5,
+                "formatted_result": "1.01275",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 1.012748854361019,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "specific_gravity_of_distillate": {
+                "arguments": {
+                    "mass_empty": 30.7931,
+                    "mass_with_substance": 80.4118,
+                    "mass_with_water": 80.8525
+                },
+                "decimal_places": 5,
+                "formatted_result": "0.99120",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 0.9911964586071745,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "specific_gravity_of_residue": {
+                "arguments": {
+                    "mass_empty": 30.7931,
+                    "mass_with_substance": 81.9567,
+                    "mass_with_water": 80.8525
+                },
+                "decimal_places": 5,
+                "formatted_result": "1.02206",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 1.022057795339137,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            },
+            "spirit_indication": {
+                "arguments": {
+                    "SGA": 0.9911964586071745
+                },
+                "decimal_places": 1,
+                "formatted_result": "8.8",
+                "method": null,
+                "natural_name": null,
+                "nominal_result": 8.803541392825466,
+                "uncertainty": null,
+                "unit": null,
+                "warnings": null
+            }
+        }
+    },
+    "WIDGETS": {
+        "address": "Address",
+        "beer_pH_S1": 4.31,
+        "beer_pH_S2": 4.33,
+        "comments": "Some comments here",
+        "contact_person": "Person",
+        "date_of_analysis": "2022-12-22",
+        "date_of_arrival": "2022-12-22",
+        "date_of_sampling": "2022-12-22",
+        "declared_alcoholic_strength": "6.4",
+        "experiment_id": "Example",
+        "lot": "Test",
+        "mass_of_pycnometer_empty_S1": 30.6907,
+        "mass_of_pycnometer_empty_S2": 30.7931,
+        "mass_of_pycnometer_with_beer_S1": 81.413,
+        "mass_of_pycnometer_with_beer_S2": 81.4907,
+        "mass_of_pycnometer_with_distillate_S1": 80.3232,
+        "mass_of_pycnometer_with_distillate_S2": 80.4118,
+        "mass_of_pycnometer_with_residue_S1": 81.8783,
+        "mass_of_pycnometer_with_residue_S2": 81.9567,
+        "mass_of_pycnometer_with_water_S1": 80.773,
+        "mass_of_pycnometer_with_water_S2": 80.8525,
+        "phone_and_email_of_contact_person": "test@mail.com",
+        "print_average_alcohol_content_by_mass": true,
+        "print_average_alcohol_content_by_volume": true,
+        "print_average_apparent_degree_of_fermentation": true,
+        "print_average_apparent_extract": true,
+        "print_average_beer_pH": true,
+        "print_average_original_extract": true,
+        "print_average_original_gravity": true,
+        "print_average_real_degree_of_fermentation": true,
+        "print_average_real_extract": true,
+        "print_average_specific_gravity_of_beer": true,
+        "producer": "Producer",
+        "product_name": "Product",
+        "purpose_of_testing": "self-control",
+        "quantity_of_sample": "Amount",
+        "results_sending_method": " via e-mail",
+        "sampler": "Sampler",
+        "submitting_company": "Submitter"
+    }
+}
