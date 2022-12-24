@@ -1,13 +1,28 @@
-from uncertainties import ufloat # Floating numbers with confidence interval
-range_warning = "At least one measurement is outside the expected range."
-repeatability_warning = "Difference between the measurements exceeds the repeatability."
+from uncertainties import ufloat # Floating numbers with uncertainty
 
-# Conventions for all functions in this file:
-# If any warnings are triggered, function will return tuple(mean, warnings: str).
-# If no warnings are triggered, function can return int, float, ufloat, but never tuple.
+#### Conventions for functions in this file ####
+# If there are messages, function will return (value, messages: list[str]) tuple.
+# If tuple is returned by function, it is expected to be (value, messages) tuple.
+# Returned values can have type int, float or ufloat for example.
+####
+
+range_message = "At least one measurement is outside the expected range."
+repeatability_message = "Difference between measurements exceeds the repeatability."
+success_message = "Uncertainty was calculated successfully."
+quantity_success_message = "Mass is within the expected range."
+quantity_warning_message = "Mass is out of the expected range."
 
 def difference(base, deduct):
     return base - deduct
+
+def mass_of_sample_before_distillation(mass_of_flask_with_sample, mass_of_empty_flask):
+    difference = mass_of_flask_with_sample - mass_of_empty_flask
+    messages = []
+    if (99.9 <= difference <= 100.1):
+        messages.append(quantity_success_message)
+    else:
+        messages.append(quantity_warning_message)
+    return (difference, messages)
 
 # Function for SGA, SGEA, SGER. Reference:
 # Series: Analytica EBC
@@ -104,8 +119,33 @@ def residue_gravity(SGER):
 def original_gravity(D, RG):
     return D + RG
 
-### Average function section ###
-# Functions in this section calculate averages and sometimes some statistical results.
+#### Statistics section ####
+# Functions in this section calculate averages and statistical results. Below is information about repeatability limit (represented by variable r95 in this file), reproducibility limit (represented by variable R95 in this file), and expanded uncertainty (represented by variable expanded_uncertainty in this file).
+
+# r95 represents the repeatability limit at the 95 % probability level. Reference:
+# Series: Analytica EBC
+# Document: 14.2 COLLABORATIVE TRIAL TO DETERMINE THE PRECISION OF A MEASUREMENT METHOD - 2002
+# Section: 7.3.5 The repeatability limit at the 95 % probability level
+
+# R95 represents the reproducibility limit at the 95 % probability level. Reference:
+# Series: Analytica EBC
+# Document: 14.2 COLLABORATIVE TRIAL TO DETERMINE THE PRECISION OF A MEASUREMENT METHOD - 2002
+# Section: 7.3.6 The reproducibility limit at the 95 % probability level.
+
+# uE = uE2r / 2.8, where uE is an uncertainty from maximum tolerable bias, and uE2r is a reproducibility limit. Reference:
+# Document: Eurolab Technical Report 1/2007 – Measurement uncertainty revisited
+# Chapter: 4, Examples. EXAMPLE 7: ROCKWELL HARDNESS TESTING
+# Section: 2.1 Measurement uncertainty evaluations derived from indirect calibration
+
+# Multiplication of standard uncertainty u with coverage factor k = 2 yields an expanded uncertainty. Expanded uncertainty can be used to construct a 95 % coverage interval. Reference:
+# Document: Eurolab Technical Report 1/2007 – Measurement uncertainty revisited
+# Chapter: 1, Review of uncertainty evaluation
+# Sections: 1.2 UNCERTAINTY DATA OBTAINED FROM THE VARIOUS APPROACHES, 1.2.1 Modelling approach
+
+# Also see reference:
+# Document: IS0 5725-6:1994(E) - Accuracy (trueness and precision) of measurement methods and results
+# Section: 4.1 Repeatability and reproducibility limits, 4.1.2
+####
 
 # Function for average alcohol content by volume. Reference:
 # Series: Analytica EBC
@@ -114,18 +154,20 @@ def original_gravity(D, RG):
 def average_alcohol_content_by_volume(alcohol_content_S1, alcohol_content_S2):
     mean = (alcohol_content_S1 + alcohol_content_S2) / 2
     range_criterion = (0.84 <= alcohol_content_S1 <= 7.27) and (0.84 <= alcohol_content_S2 <= 7.27)
-    repeatability_criterion = abs(alcohol_content_S1 - alcohol_content_S2) <= 0.062
+    repeatability_criterion = abs(alcohol_content_S1 - alcohol_content_S2) <= 0.062 # Calulated using r95, the repeatability limit at the 95 % probability level
+    messages = []
 
     if range_criterion and repeatability_criterion:
-        R95 = 0.07 + 0.02 * mean
-        return ufloat(mean, R95) # Here and below we report 95% confidential interval.
+        messages.append(success_message)
+        R95 = 0.07 + 0.02 * mean # Reproducibility limit at the 95 % probability level
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
     else:
-        warnings = []
         if not range_criterion:
-            warnings.append(range_warning)
+            messages.append(range_message)
         if not repeatability_criterion:
-            warnings.append(repeatability_warning)
-        return (mean, warnings)
+            messages.append(repeatability_message)
+        return (mean, messages)
 
 # Function for average alcohol content by mass. Reference:
 # Series: Analytica EBC
@@ -134,18 +176,20 @@ def average_alcohol_content_by_volume(alcohol_content_S1, alcohol_content_S2):
 def average_alcohol_content_by_mass(alcohol_content_S1, alcohol_content_S2):
     mean = (alcohol_content_S1 + alcohol_content_S2) / 2
     range_criterion = (1.72 <= alcohol_content_S1 <=7.00) and (1.72 <= alcohol_content_S2 <=7.00)
-    repeatability_criterion = abs(alcohol_content_S1 - alcohol_content_S2) <= 0.03 + 0.005 * mean
+    repeatability_criterion = abs(alcohol_content_S1 - alcohol_content_S2) <= 0.03 + 0.005 * mean # Calulated using r95, the repeatability limit at the 95 % probability level
+    messages = []
 
     if range_criterion and repeatability_criterion:
+        messages.append(success_message)
         R95 = 0.03 + 0.02 * mean
-        return ufloat(mean, R95)
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
     else:
-        warnings = []
         if not range_criterion:
-            warnings.append(range_warning)
+            messages.append(range_message)
         if not repeatability_criterion:
-            warnings.append(repeatability_warning)
-        return (mean, warnings)
+            messages.append(repeatability_message)
+        return (mean, messages)
 
 # Function for average specific gravity. Reference:
 # Series: Analytica EBC
@@ -153,14 +197,14 @@ def average_alcohol_content_by_mass(alcohol_content_S1, alcohol_content_S2):
 # Section: 8.2.2 Carry out duplicate determinations
 def average_specific_gravity_of_beer(specific_gravity_S1, specific_gravity_S2):
     mean = (specific_gravity_S1 + specific_gravity_S2) / 2
-    repeatability_criterion = abs(round(specific_gravity_S1, 4) - round(specific_gravity_S2, 4)) <= 0.0002
+    repeatability_criterion = abs(round(specific_gravity_S1, 4) - round(specific_gravity_S2, 4)) <= 0.0002 # Calulated using r95, the repeatability limit at the 95 % probability level
+    messages = []
 
     if repeatability_criterion:
         return mean
     else:
-        warnings = []
-        warnings.append(repeatability_warning)
-        return (mean, warnings)
+        messages.append(repeatability_message)
+        return (mean, messages)
 
 # Function for average real extract. Reference:
 # Series: Analytica EBC
@@ -169,18 +213,20 @@ def average_specific_gravity_of_beer(specific_gravity_S1, specific_gravity_S2):
 def average_real_extract(real_extract_S1, real_extract_S2):
     mean = (real_extract_S1 + real_extract_S2) / 2
     range_criterion = (2.9 <= real_extract_S1 <= 6.0) and (2.9 <= real_extract_S2 <= 6.0)
-    repeatability_criterion = (abs(real_extract_S1 - real_extract_S2) <= 0.02)
+    repeatability_criterion = abs(real_extract_S1 - real_extract_S2) <= 0.02 # Calulated using r95, the repeatability limit at the 95 % probability level
+    messages = []
 
     if range_criterion and repeatability_criterion:
+        messages.append(success_message)
         R95 = 0.02 * mean
-        return ufloat(mean, R95)
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
     else:
-        warnings = []
         if not range_criterion:
-            warnings.append(range_warning)
+            messages.append(range_message)
         if not repeatability_criterion:
-            warnings.append(repeatability_warning)
-        return (mean, warnings)
+            messages.append(repeatability_message)
+        return (mean, messages)
 
 # Function for average original extract. Reference:
 # Series: Analytica EBC
@@ -190,23 +236,27 @@ def average_original_extract(original_extract_S1, original_extract_S2):
     mean = (original_extract_S1 + original_extract_S2) / 2
     range1_criterion = (7 <= original_extract_S1 <= 12) and (7 <= original_extract_S2 <= 12)
     range2_criterion = (round(mean, 1) == 19.0)
-    repeatability_for_range1_criterion = abs(original_extract_S1 - original_extract_S2) <= 0.07
+    repeatability_for_range1_criterion = abs(original_extract_S1 - original_extract_S2) <= 0.07 # Calulated using r95, the repeatability limit at the 95 % probability level
     repeatability_for_range2_criterion = abs(original_extract_S1 - original_extract_S2) <= 0.15
+    messages = []
 
     if (range1_criterion and repeatability_for_range1_criterion):
+        messages.append(success_message)
         R95 = 0.19
-        return ufloat(mean, R95)
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
     elif (range2_criterion and repeatability_for_range2_criterion):
+        messages.append(success_message)
         R95 = 0.38
-        return ufloat(mean, R95)
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
     else:
-        warnings = []
         if not (range1_criterion or range2_criterion):
-            warnings.append(range_warning)
+            messages.append(range_message)
         if (not range2_criterion) and (not repeatability_for_range1_criterion) \
         or range2_criterion and (not repeatability_for_range2_criterion): # Repeatability for range1 is used as criterion if not in range2.
-            warnings.append(repeatability_warning)
-        return (mean, warnings)
+            messages.append(repeatability_message)
+        return (mean, messages)
 
 # Function for average apparent extract. Reference:
 # Series: Analytica EBC
@@ -215,17 +265,20 @@ def average_original_extract(original_extract_S1, original_extract_S2):
 def average_apparent_extract(apparent_extract_S1, apparent_extract_S2):
     mean = (apparent_extract_S1 + apparent_extract_S2) / 2
     range_criterion = (1.5 <= apparent_extract_S1 <= 3.0) and (1.5 <= apparent_extract_S2 <= 3.0)
-    repeatability_criterion = abs(apparent_extract_S1 - apparent_extract_S2) <=  0.018
+    repeatability_criterion = abs(apparent_extract_S1 - apparent_extract_S2) <=  0.018 # Calulated using r95, the repeatability limit at the 95 % probability level
+    messages = []
+
     if range_criterion and repeatability_criterion:
+        messages.append(success_message)
         R95 = 0.080
-        return ufloat(mean, R95)
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
     else:
-        warnings = []
         if not range_criterion:
-            warnings.append(range_warning)
+            messages.append(range_message)
         if not repeatability_criterion:
-            warnings.append(repeatability_warning)
-        return (mean, warnings)
+            messages.append(repeatability_message)
+        return (mean, messages)
 
 # Function for average original gravity. Reference:
 # Series: Analytica EBC
@@ -234,18 +287,20 @@ def average_apparent_extract(apparent_extract_S1, apparent_extract_S2):
 def average_original_gravity(original_gravity_S1, original_gravity_S2):
     mean = (original_gravity_S1 + original_gravity_S2) / 2
     range_criterion = (31 <= original_gravity_S1 <= 34) and (31 <= original_gravity_S2 <= 34)
-    repeatability_criterion = abs(original_gravity_S1 - original_gravity_S2) <= 0.53
+    repeatability_criterion = abs(original_gravity_S1 - original_gravity_S2) <= 0.53 # Calulated using r95, the repeatability limit at the 95 % probability level
+    messages = []
 
     if range_criterion and repeatability_criterion:
+        messages.append(success_message)
         R95 = 1.11
-        return ufloat(mean, R95)
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
     else:
-        warnings = []
         if not range_criterion:
-            warnings.append(range_warning)
+            messages.append(range_message)
         if not repeatability_criterion:
-            warnings.append(repeatability_warning)
-        return (mean, warnings)
+            messages.append(repeatability_message)
+        return (mean, messages)
 
 # Function for average real degree of fermentation of beer (RDF). Reference:
 # Series: Analytica EBC
@@ -255,26 +310,50 @@ def average_real_degree_of_fermentation (real_degree_of_fermentation_S1, real_de
     mean = (real_degree_of_fermentation_S1 + real_degree_of_fermentation_S2) / 2
     range1_criterion = (63 <= real_degree_of_fermentation_S1 <= 71) and (63 <= real_degree_of_fermentation_S2 <= 71)
     range2_criterion = (round(mean, 1) == 50.0)
-    repeatability_for_range1_criterion = abs(real_degree_of_fermentation_S1 - real_degree_of_fermentation_S2) <= 0.21
+    repeatability_for_range1_criterion = abs(real_degree_of_fermentation_S1 - real_degree_of_fermentation_S2) <= 0.21 # Calulated using r95, the repeatability limit at the 95 % probability level
     repeatability_for_range2_criterion = abs(real_degree_of_fermentation_S1 - real_degree_of_fermentation_S2) <= 0.50
+    messages = []
 
     if (range1_criterion and repeatability_for_range1_criterion):
+        messages.append(success_message)
         R95 = 0.61
-        return ufloat(mean, R95)
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
     elif (range2_criterion and repeatability_for_range2_criterion):
+        messages.append(success_message)
         R95 =  1.16
-        return ufloat(mean, R95)
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
     else:
-        warnings = []
         if not (range1_criterion or range2_criterion):
-            warnings.append(range_warning)
+            messages.append(range_message)
         if (not range2_criterion) and (not repeatability_for_range1_criterion) \
         or range2_criterion and (not repeatability_for_range2_criterion): # Repeatability for range1 is used as criterion if not in range2.
-            warnings.append(repeatability_warning)
-        return (mean, warnings)
+            messages.append(repeatability_message)
+        return (mean, messages)
+
+# Function for pH. Reference:
+# Series: Analytica EBC
+# Document: 9.35 PH OF BEER (FORMERLY PUBLISHED AS IOB METHOD 9.42) – 2004
+# Section: 8.2 Precision values determined by IOB Analysis Committee
+def average_beer_pH(pH_S1, pH_S2):
+    mean = (pH_S1 + pH_S2) / 2
+    range_criterion = (3.94 <= pH_S1 <= 4.42) and (3.94 <= pH_S2 <= 4.42 )
+    repeatability_criterion = abs(pH_S1 - pH_S2) <= 0.25 # Calulated using r95, the repeatability limit at the 95 % probability level
+    messages = []
+
+    if range_criterion and repeatability_criterion:
+        messages.append(success_message)
+        R95 = 0.133
+        expanded_uncertainty = (R95 / 2.8) * 2 # Expanded uncertainty with coverage factor = 2
+        return (ufloat(mean, expanded_uncertainty), messages)
+    else:
+        if not range_criterion:
+            messages.append(range_message)
+        if not repeatability_criterion:
+            messages.append(repeatability_message)
+        return (mean, messages)
+
 
 def average_apparent_degree_of_fermentation(apparent_degree_of_fermentation_S1, apparent_degree_of_fermentation_S2):
     return (apparent_degree_of_fermentation_S1 + apparent_degree_of_fermentation_S2) /2
-
-def average_beer_pH(pH_S1, pH_S2):
-    return (pH_S1 + pH_S2) / 2

@@ -490,7 +490,7 @@ tab1_output = widgets.Textarea(
 
 tab1_box = widgets.VBox(
     [tab1_output],
-    layout={'height': '580px', 'width': '450px'}
+    layout={'height': '580px', 'width': '520px'}
 )
 
 tab2_output = widgets.Textarea(
@@ -499,5 +499,5 @@ tab2_output = widgets.Textarea(
 
 tab2_box = widgets.VBox(
     [tab2_output],
-    layout={'height': '580px', 'width': '450px'}
+    layout={'height': '580px', 'width': '520px'}
 )
