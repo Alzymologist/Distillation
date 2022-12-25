@@ -17,12 +17,12 @@ conda env create -f ENV.yml
 2) Open Distillation.ipynb notebook.
 3) Run all cells.
 
-You should see several tabs with widgets. Now try to input data from supplied dataset 1 or 2.
+After running all cells, you should see several tabs with widgets. Now you can try to enter data manually from the provided data sets or load the state from `20221223_Test_Example.json` (it is in the `json` folder).
 
 ### Example dataset № 1
-This data set contains only the values that are important for calculations. This dataset should trigger no warnings (see image below).
+This data set contains only the values that are important for calculations. This dataset should show be "all green" (show no statistical warnings), see image below.
 
-<img width="380" alt="Distillation - JupyterLab1" src="https://user-images.githubusercontent.com/69721131/208796320-5f2c0698-b376-4bfe-9ea6-318607305e1c.png">
+<img width="410" alt="Distillation - ok" src="https://user-images.githubusercontent.com/69721131/209453721-586c9520-c5f1-4c47-a9e3-25c968cc0558.png">
 
 | Parameter                               | Series1 | Series2 |
 |-----------------------------------------|---------|---------|
@@ -35,9 +35,9 @@ This data set contains only the values that are important for calculations. This
 
 
 ### Example dataset № 2
-This data set contains only the values that are important for calculations. This dataset should trigger statistical warnings (see image below).
+This data set contains only the values that are important for calculations. This dataset should should show some statistical warnings,see image below.
 
-<img width="380" alt="Distillation - JupyterLab2" src="https://user-images.githubusercontent.com/69721131/208796553-ad4ddf19-6add-4862-ac7d-2206ce564fd9.png">
+<img width="410" alt="Distillation - warnings" src="https://user-images.githubusercontent.com/69721131/209453657-dcf3b58f-a5b8-4c53-925d-861fa8152020.png">
 
 | Parameter                               | Series1 | Series2 |
 |-----------------------------------------|---------|---------|
@@ -48,11 +48,9 @@ This data set contains only the values that are important for calculations. This
 | Mass of pycnometer (with residue), g    | 81.8783 | 81.9567 |
 | pH                                      | 4.310   | 4.330   |
 
-
 ### Creating report PDF
-Once you entered this data, got to the "Create report" tab, choose what to include in the report and generate it by clicking the button.
+Once you have entered the data manually or loaded the state, you can go to the "Create report" tab, choose what to include in the report, and generate the report.
 
 ## To do
 * Add functions for color and bitterness calculations.
-* Create a data loading system. It will help to load widgets state after Kernel shut down and also to do testing.
 * Check existing functions and data inside `update()` for correctness.
