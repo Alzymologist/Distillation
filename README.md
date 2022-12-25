@@ -50,21 +50,20 @@ This data set contains only the values that are important for calculations. This
 
 ### State loading
 State loading creates a union state. If you currently have state A and loading state B, you get the union of states A and B, with priority for B. Example:
-State A
-widget1: valueX
-widget2: 
-widget3: valueY
+State A   
+widget1: valueX   
+widget2:   
+widget3: valueY   
 
-State B
-widget1: 
-widget2: valueP
-widget3: valueZ
+State B   
+widget1:   
+widget2: valueP   
+widget3: valueZ   
 
-Union of states A and B
-widget1: valueX
-widget2: valueP
-widget3: valueZ
-
+Union of states A and B   
+widget1: valueX   
+widget2: valueP   
+widget3: valueZ   
 
 ### Creating report PDF
 Once you have entered the data manually or loaded the state, you can go to the "Create report" tab, choose what to include in the report, and generate the report.
