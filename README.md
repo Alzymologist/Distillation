@@ -35,7 +35,7 @@ This data set contains only the values that are important for calculations. This
 
 
 ### Example dataset № 2
-This data set contains only the values that are important for calculations. This dataset should should show some statistical warnings,see image below.
+This data set contains only the values that are important for calculations. This dataset should show some statistical warnings, see image below.
 
 <img width="410" alt="Distillation - warnings" src="https://user-images.githubusercontent.com/69721131/209453657-dcf3b58f-a5b8-4c53-925d-861fa8152020.png">
 
@@ -47,6 +47,24 @@ This data set contains only the values that are important for calculations. This
 | Mass of pycnometer (with distillate), g | 80.3232 | 80.4118 |
 | Mass of pycnometer (with residue), g    | 81.8783 | 81.9567 |
 | pH                                      | 4.310   | 4.330   |
+
+### State loading
+State loading creates a union state. If you currently have state A and loading state B, you get the union of states A and B, with priority for B. Example:
+State A
+widget1: valueX
+widget2: 
+widget3: valueY
+
+State B
+widget1: 
+widget2: valueP
+widget3: valueZ
+
+Union of states A and B
+widget1: valueX
+widget2: valueP
+widget3: valueZ
+
 
 ### Creating report PDF
 Once you have entered the data manually or loaded the state, you can go to the "Create report" tab, choose what to include in the report, and generate the report.
