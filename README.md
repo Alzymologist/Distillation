@@ -35,7 +35,7 @@ This data set contains only the values that are important for calculations. This
 
 
 ### Example dataset № 2
-This data set contains only the values that are important for calculations. This dataset should show some statistical warnings, see image below.
+This data set contains only the values that are important for calculations. This dataset should show some statistical warnings, see image below.   
 
 <img width="410" alt="Distillation - warnings" src="https://user-images.githubusercontent.com/69721131/209453657-dcf3b58f-a5b8-4c53-925d-861fa8152020.png">
 
@@ -49,7 +49,8 @@ This data set contains only the values that are important for calculations. This
 | pH                                      | 4.310   | 4.330   |
 
 ### State loading
-State loading creates a union state. If you currently have state A and loading state B, you get the union of states A and B, with priority for B. Example:
+State loading creates a union state. If you currently have state A and loading state B, you get the union of states A and B, with priority for B. Example:   
+   
 State A   
 widget1: valueX   
 widget2:   
@@ -66,8 +67,8 @@ widget2: valueP
 widget3: valueZ   
 
 ### Creating report PDF
-Once you have entered the data manually or loaded the state, you can go to the "Create report" tab, choose what to include in the report, and generate the report.
+Once you have entered the data manually or loaded the state, you can go to the "Create report" tab, choose what to include in the report, and generate the report.   
 
 ## To do
-* Add functions for color and bitterness calculations.
-* Check existing functions and data inside `update()` for correctness.
+* Add functions for color and bitterness calculations.   
+* Check existing functions and data inside `update()` for correctness.   
