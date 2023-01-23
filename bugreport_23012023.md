@@ -3,3 +3,4 @@
 3. Decimal comma is not recognized
 4. LGC proficiency testing reports require alternative number of decimal points. One have to look for those in .json file
 5. Not sure if Alzymologist Oy Lab is a legal name.
+6. Add colour measurement functions
