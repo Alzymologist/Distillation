@@ -70,5 +70,11 @@ widget3: valueZ
 Once you have entered the data manually or loaded the state, you can go to the "Create report" tab, choose what to include in the report, and generate the report.   
 
 ## To do
-* Add functions for color and bitterness calculations.   
-* Check existing functions and data inside `update()` for correctness.   
+1. Explore if a comma can be used as a decimal separator.   
+2. LGC proficiency testing reports require an alternative number of decimal points. Explore the difference.   
+3. Change name to Alzymologist Oy laboratory.   
+4. Make it possible to run the notebook on a server (using Voila or another service).   
+5. Add colour measurement functions (see EBC 9.6 & 8.5)   
+6. Add functions for bitterness calculations.   
+7. Check existing functions and data inside `update()` for correctness.   
+8. Pull most of the code from the notebook into the source folder (the notebook should be used as a frontend).   
