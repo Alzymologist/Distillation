@@ -83,27 +83,32 @@ def apparent_degree_of_fermentation(original_extract, apparent_extract):
 def spirit_indication(SGA):
     return 1000 * (1-SGA)
 
-# Function for degrees of gravity lost. Reference:
+# Data and function for degrees of gravity lost. Reference:
 # Series: Analytica EBC
 # Document: 9.4 ORIGINAL, REAL AND APPARENT EXTRACT AND ORIGINAL GRAVITY OF BEER – 2004
 # Section: 9.1.5.2 Calculate the corresponding degrees of gravity lost (D)
+GRAVITY_LOST_RANGES_AND_COEFFICIENTS = [
+    ((0, 2), 4.24, 0),
+    ((2, 4), 4.38411, -0.32055),
+    ((4, 5), 4.4812, -0.70952),
+    ((5, 6), 4.5051, -0.81757),
+    ((6, 7), 4.54437, -1.05698),
+    ((7, 8), 4.55892, -1.16411),
+    ((8, 9), 4.57624, -1.30303),
+    ((9, 10), 4.5982, -1.50326),
+    ((10, 11), 4.71954, -2.72814),
+    ((11, 12), 4.8558, -4.2204),
+    ((12, 13), 4.9327, -5.1375),
+    ((13, 14), 4.9442, -5.2861),
+    ((14, 15), 5.0030, -6.0788),
+    ((15, 16), 5.0630, -6.97582),
+    ((16, float('inf')), 5.07, -7.08),
+]
+
 def degrees_of_gravity_lost(S):
-    if        S < 2:   D = S * 4.24
-    elif 2 <= S < 4:   D = S * 4.38411 - 0.32055
-    elif 4 <= S < 5:   D = S * 4.4812 - 0.70952
-    elif 5 <= S < 6:   D = S * 4.5051 - 0.81757
-    elif 6 <= S < 7:   D = S * 4.54437 - 1.05698
-    elif 7 <= S < 8:   D = S * 4.55892 - 1.16411
-    elif 8 <= S < 9:   D = S * 4.57624 - 1.30303
-    elif 9 <= S < 10:  D = S * 4.5982 - 1.50326
-    elif 10 <= S < 11: D = S * 4.71954 - 2.72814
-    elif 11 <= S < 12: D = S * 4.8558 - 4.2204
-    elif 12 <= S < 13: D = S * 4.9327 - 5.1375
-    elif 13 <= S < 14: D = S * 4.9442 - 5.2861
-    elif 14 <= S < 15: D = S * 5.0030 - 6.0788
-    elif 15 <= S < 16: D = S * 5.0630 - 6.97582
-    elif       S>= 16: D = S * 5.07 - 7.08
-    return D
+    for (lower_bound, upper_bound), A, B in GRAVITY_LOST_RANGES_AND_COEFFICIENTS:
+        if lower_bound <= S < upper_bound:
+            return S * A + B
 
 # Function for residue gravity (RG). Reference:
 # Series: Analytica EBC
